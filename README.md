@@ -3,6 +3,9 @@ One difficulty that people have running IPv6 networks with SLAAC, is tracking ab
 
 This project is a collection of simple scripts to collect data IPv6 neightbors tables from various layer3 routers in your network.  A description of files follows.
 
+I wrote this in perl in order to annoy everyone, but if there is strong interest I can rewrite in python.  Benchmarks/speed seems pretty good, with addresses stored as binaries rather than strings.
+
+
 # Files that will run through cron
 - poll-ipv6-neighbors.pl : The core script that is run perodically and will scrap the IPv6 neighbors from either a fortigate or a cisco device.
 - expire-ipv6-entries.pl : Age out older entries from the database, the default is set to 30 days.
