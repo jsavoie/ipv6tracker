@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IPv6 tracker</title>
+<link rel="SHORTCUT ICON" href="../favicon.ico">
+<link rel="stylesheet" type="text/css" href="yourcorporate.css">
+<script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+            $('#submitipv6').click(function(){
+                queryIPv6address($('#ipv6address').val());
+            });
+});
+
+$(document).ready(function() {
+            $('#submitmac').click(function(){
+                queryMACaddress($('#macaddress').val());
+            });
+});
+
+function queryIPv6address(str) {
+        $.post("ipv6tracker-ajax.php",{ ipv6address: str },
+        function(data){
+                $('#output').html(data);
+        });
+};
+
+function queryMACaddress(str) {
+        $.post("ipv6tracker-ajax.php",{ macaddress: str },
+        function(data){
+                $('#output').html(data);
+        });
+};
+
+</script>
+</head>
+
+<div align=center class="content">
+<img src="yourcorporatelogo.jpg"><BR>
+<h1>IPv6 tracker</h1>
+</div>
+
+<div align=left class="content">
+Lookup IPv6 Address: <input type=text size=30 id="ipv6address" name="ipv6address"><br><br>
+<input id="submitipv6" value="Query IPv6 Address" name="submitipv6" type=submit>
+</div>
+
+<div align=left class="content">
+Lookup MAC Address: <input type=text size=30 id="macaddress" name="macaddress"><br><br>
+<input id="submitmac" value="Query MAC Address" name="submitmac" type=submit>
+</div>
+
+<div align=left id="output" class="content">
+</div>
+
+</body>
+</html>

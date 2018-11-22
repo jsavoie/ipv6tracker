@@ -1,0 +1,2 @@
+fortigatehostname,username,password,fortigate
+ciscohostname,username,password,cisco
