@@ -1,7 +1,7 @@
 Project Description:
 One difficulty that people have running IPv6 networks with SLAAC, is tracking abuse from IPv6 privacy addresses.  These addresses are temporary, and not encoded with a MAC address.
 
-This project is a collection of simple scripts to collect data IPv6 neightbors tables from various layer3 routers in your network.  A description of files follows.
+This project is a collection of simple scripts to collect data IPv6 neighbors tables from various layer3 routers in your network.  A description of files follows.
 
 I wrote this in perl in order to annoy everyone, but if there is strong interest I can rewrite in python.  Benchmarks/speed seems pretty good, with addresses stored as binaries rather than strings.
 
