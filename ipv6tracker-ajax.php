@@ -26,7 +26,7 @@ elseif ( isset($_POST['macaddress']) ) {
 	$macaddress = trim(filter_input(INPUT_POST, 'macaddress', FILTER_SANITIZE_STRING));
 	echo "Querying $macaddress<BR><BR>";
 	$macaddress = mac2int($macaddress);
-	$statement = $database->prepare("select INET6_NTOA(ipv6address),lastseen,username from knownhosts where mac=?");
+	$statement = $database->prepare("select INET6_NTOA(ipv6address),lastseen,username from knownhosts where mac=? order by lastseen desc");
 	$statement->bind_param("s", $macaddress);
 	$statement->execute();
 	$statement->bind_result($ipv6address, $lastseen, $username);
