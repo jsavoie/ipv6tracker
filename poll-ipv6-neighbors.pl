@@ -88,8 +88,8 @@ sub pollhost {
 
 open(HOSTLIST, "<", "$ARGV[0]") or die "$@";
 while (<HOSTLIST>) {
-        chomp;
-        my @line = split(',');
+	chomp;
+	my @line = split(',');
 	if (@line != 4) { die "Wrong format!\n"; }
 
 	# print "Polling host $line[0]\n";
