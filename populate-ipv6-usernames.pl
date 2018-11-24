@@ -17,9 +17,7 @@ my %logins;
 
 # Setup database connnection
 my $db_handle = DBI->connect("dbi:mysql:database=ipv6tracker;host=--", "--", "--") or die "Cannot connect to the database";
-
-# Only update records seen within the last day, assuming script runs daily
-my $updateusername = $db_handle->prepare("update knownhosts set username=? where mac=? and lastseen > DATE_ADD(NOW(), INTERVAL -1 DAY)");
+my $updateusername = $db_handle->prepare("replace into authenticatedusers set username=?, mac=?");
 
 sub mac_hex2num {
   my $mac_hex = shift;
@@ -48,8 +46,8 @@ foreach my $server (@smbservers) {
 	my ($year, $month, $day) = Add_Delta_Days(Today(), -1);
 	my $radiuslog = sprintf("IN%02d%02d%02d.log", $year % 100, $month, $day);
 
-	# print "Opening $radiuslog file on $server\n";
-	open (RLOG, "smb://$server/Logfiles/$radiuslog", "<") or die "$@";
+	# Choice was made to move onto the next host, rather than calling die here.
+	open (RLOG, "smb://$server/Logfiles/$radiuslog", "<") or next;
 
 	# Process the log, save successful logins to a hash
 	while (<RLOG>) {

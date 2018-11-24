@@ -7,8 +7,7 @@ use Net::SSH2;
 
 # Setup database connnection
 my $db_handle = DBI->connect("dbi:mysql:database=ipv6tracker;host=--", "--", "--") or die "Cannot connect to the database";
-my $addaddress = $db_handle->prepare("insert ignore into knownhosts set ipv6address=INET6_ATON(?)");
-my $updateaddress = $db_handle->prepare("update knownhosts set mac=?, lastseen=NOW() where ipv6address=INET6_ATON(?)");
+my $updateaddress = $db_handle->prepare("replace into knownhosts set mac=?, lastseen=NOW(), ipv6address=INET6_ATON(?)");
 
 sub mac_hex2num {
   my $mac_hex = shift;
@@ -49,7 +48,6 @@ sub pollhost {
 			{
 				my $ipv6address = $+{ipv6};
 				my $macaddress = $+{mac};
-				$addaddress->execute($ipv6address);
 				$updateaddress->execute(mac_hex2num($macaddress), $ipv6address);
 			}
 		}
@@ -72,7 +70,6 @@ sub pollhost {
 			{
                                 my $ipv6address = $+{ipv6};
                                 my $macaddress = $+{mac};
-                                $addaddress->execute($ipv6address);
                                 $updateaddress->execute(mac_hex2num($macaddress), $ipv6address);
 			}
                 }
