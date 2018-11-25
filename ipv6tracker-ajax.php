@@ -26,16 +26,26 @@ elseif ( isset($_POST['macaddress']) ) {
 	$macaddress = trim(filter_input(INPUT_POST, 'macaddress', FILTER_SANITIZE_STRING));
 	echo "Querying $macaddress<BR><BR>";
 	$macaddress = mac2int($macaddress);
-	$statement = $database->prepare("select INET6_NTOA(knownhosts.ipv6address),lastseen,authenticatedusers.username from knownhosts left join authenticatedusers on knownhosts.mac = authenticatedusers.mac where knownhosts.mac=? order by lastseen desc");
-	$statement->bind_param("s", $macaddress);
-	$statement->execute();
-	$statement->bind_result($ipv6address, $lastseen, $username);
+
+	// Search for the username associated from this MAC
+	$statement1 = $database->prepare("select username from authenticatedusers where mac=?");
+	$statement1->bind_param("s", $macaddress);
+	$statement1->execute();
+	$statement1->bind_result($username);
+	while ( $statement1->fetch() ) {
+		print "Found username: $username<BR><BR>";
+	}
+
+	// Search for all the IPv6 addresses this MAC has used
+	$statement2 = $database->prepare("select INET6_NTOA(knownhosts.ipv6address),lastseen from knownhosts where mac=? order by lastseen desc");
+	$statement2->bind_param("s", $macaddress);
+	$statement2->execute();
+	$statement2->bind_result($ipv6address, $lastseen);
         print "<table width=50%>";
-        print "<tr><td>IPv6 Address</td><td>Last Seen</td><td>Username</td></tr>";
-	while ( $statement->fetch() ) {
+        print "<tr><td>IPv6 Address</td><td>Last Seen</td></tr>";
+	while ( $statement2->fetch() ) {
 		print "<tr><td>$ipv6address</td>";
-		print "<td>$lastseen</td>";
-		print "<td>$username</td></tr>";
+		print "<td>$lastseen</td></tr>";
 	}
 	print "</table>";
 }
