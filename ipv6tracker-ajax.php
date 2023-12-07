@@ -16,6 +16,9 @@ if ( isset($_POST['ipv6address']) ) {
 	print "<table width=50%>";
 	print "<tr><td>MAC Address</td><td>Last Seen</td><td>Username</td></tr>";
 	while ( $statement->fetch() ) {
+		// Fix for addresses that start with 0s
+		$mac = str_pad($mac, 12, "0", STR_PAD_LEFT);
+
 		print "<tr><td>" . implode(':', str_split($mac,2)) . "</td>";
 		print "<td>$lastseen</td>";
 		print "<td>$username</td></tr>";
